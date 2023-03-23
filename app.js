@@ -9,16 +9,10 @@ const { findByIdAndDelete } = require('./models/campground');
 const app = express();
 const catchAsync = require('./utils/catchAsync');
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp',
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }
-).then(res => {
-    console.log('Database connected');
-}).catch(e => {
-    console.log('oh no error ' + e);
-})
+mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp').then(()=>{
+    console.log('Connected to MongoDB');
+}).
+  catch(error => handleError(error));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -28,7 +22,7 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsmate);
 
 app.get('/', (req, res) => {
-    res.render("home");
+    res.redirect('/campgrounds');
 });
 
 app.get('/campgrounds', catchAsync(async (req, res) => {
